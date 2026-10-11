@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2026 Devin Lin <devin@kde.org>
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+[Desktop Entry]
+Name=Music
+Comment=Enjoy your music collection on the big screen
+Exec=@CMAKE_INSTALL_FULL_BINDIR@/bigscreen-music
+Icon=folder-music
+Type=Application
+Terminal=false
+Categories=Qt;KDE;AudioVideo;Audio;Player;
+SingleMainWindow=true
+Keywords=music;audio;player;songs;albums;artists;
+X-KDE-FormFactor=mediacenter;
