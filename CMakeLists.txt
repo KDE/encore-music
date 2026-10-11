@@ -33,8 +33,11 @@ ecm_setup_version(${PROJECT_VERSION}
 )
 
 find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
+    Concurrent
     Core
+    DBus
     Gui
+    Multimedia
     Qml
     Quick
     QuickControls2
@@ -43,6 +46,7 @@ find_package(KF6 ${KF_MIN_VERSION} REQUIRED COMPONENTS
     CoreAddons
     Crash
     DBusAddons
+    FileMetaData
     I18n
     Kirigami
 )

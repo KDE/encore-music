@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Devin Lin <devin@kde.org>
 // SPDX-License-Identifier: GPL-2.0-or-later
 
+#include "mpris.h"
+#include "player.h"
 #include "version.h"
 
 #include <KAboutData>
@@ -10,12 +12,22 @@
 #include <KLocalizedString>
 
 #include <QCommandLineParser>
+#include <QDir>
 #include <QGuiApplication>
 #include <QIcon>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
 
 using namespace Qt::StringLiterals;
+
+const QList<QUrl> urlsFromArguments(const QStringList &arguments, const QString &workingDirectory)
+{
+    QList<QUrl> urls;
+    for (const QString &argument : arguments) {
+        urls.append(QUrl::fromUserInput(argument, workingDirectory, QUrl::AssumeLocalFile));
+    }
+    return urls;
+}
 
 int main(int argc, char *argv[])
 {
@@ -29,7 +41,7 @@ int main(int argc, char *argv[])
     KAboutData aboutData(u"bigscreen-music"_s,
                          i18n("Music"),
                          QStringLiteral(BIGSCREENMUSIC_VERSION_STRING),
-                         i18n("Music player for Plasma Bigscreen"),
+                         i18n("Enjoy your music collection on the big screen"),
                          KAboutLicense::GPL_V2,
                          i18n("© 2026 KDE Community"));
     aboutData.addAuthor(i18n("Devin Lin"), QString(), u"devin@kde.org"_s);
@@ -42,6 +54,7 @@ int main(int argc, char *argv[])
 
     QCommandLineParser parser;
     aboutData.setupCommandLine(&parser);
+    parser.addPositionalArgument(u"files"_s, i18n("Audio files or folders to play"), u"[files...]"_s);
     parser.process(application);
     aboutData.processCommandLine(&parser);
 
@@ -55,14 +68,32 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    // Bring the existing window forward when the app is launched again
-    QObject::connect(&service, &KDBusService::activateRequested, &engine, [&engine]() {
+    auto raiseWindow = [&engine]() {
         if (auto window = qobject_cast<QQuickWindow *>(engine.rootObjects().constFirst())) {
             window->show();
             window->raise();
             window->requestActivate();
         }
-    });
+    };
+
+    Player *player = Player::instance();
+    Mpris mpris(player);
+    QObject::connect(&mpris, &Mpris::raiseRequested, &engine, raiseWindow);
+
+    player->openUrls(urlsFromArguments(parser.positionalArguments(), QDir::currentPath()));
+
+    // Launching the app again brings this window forward, and plays any files it was given
+    QObject::connect(&service,
+                     &KDBusService::activateRequested,
+                     &engine,
+                     [&parser, player, raiseWindow](const QStringList &arguments, const QString &workingDirectory) {
+                         raiseWindow();
+                         if (arguments.isEmpty()) {
+                             return;
+                         }
+                         parser.parse(arguments);
+                         player->openUrls(urlsFromArguments(parser.positionalArguments(), workingDirectory));
+                     });
 
     return application.exec();
 }
