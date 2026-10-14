@@ -6,6 +6,7 @@
 
 #include <QFuture>
 #include <QJSEngine>
+#include <QRandomGenerator>
 #include <QtConcurrentRun>
 
 using namespace Qt::StringLiterals;
@@ -246,6 +247,21 @@ void Player::enqueue(const QList<QUrl> &urls)
 void Player::playNext(const QList<QUrl> &urls)
 {
     load(urls, LoadAction::InsertNext);
+}
+
+void Player::playTracks(const QList<Track> &tracks, int startIndex, bool shuffle)
+{
+    if (tracks.isEmpty()) {
+        return;
+    }
+
+    m_playWhenLoaded = true;
+    if (shuffle) {
+        startIndex = QRandomGenerator::global()->bounded(int(tracks.size()));
+        setShuffle(true);
+    }
+    // With shuffle on, the queue puts the start track first and shuffles the rest
+    m_queue->setTracks(tracks, startIndex);
 }
 
 void Player::load(const QList<QUrl> &urls, LoadAction action)

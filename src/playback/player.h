@@ -59,8 +59,7 @@ public:
     PlaybackState playbackState() const;
     bool isPlaying() const;
 
-    // In milliseconds
-    qint64 position() const;
+    qint64 position() const; // ms
     qint64 duration() const;
 
     qreal volume() const;
@@ -78,7 +77,7 @@ public:
     // Whether files are being read to be queued
     bool isLoading() const;
 
-    // Formats a time in milliseconds, such as 3:07 or 1:02:45
+    // Formats a time in milliseconds (ex. 1:02:45)
     Q_INVOKABLE static QString formatTime(qint64 milliseconds);
 
 public Q_SLOTS:
@@ -91,10 +90,10 @@ public Q_SLOTS:
     void seek(qint64 position);
     void playIndex(int index);
 
-    // Replaces the queue with the given URLs
     void openUrls(const QList<QUrl> &urls);
     void enqueue(const QList<QUrl> &urls);
     void playNext(const QList<QUrl> &urls);
+    void playTracks(const QList<Track> &tracks, int startIndex, bool shuffle);
 
 Q_SIGNALS:
     void currentTrackChanged();
@@ -123,7 +122,6 @@ private:
     void handleMediaStatus(QMediaPlayer::MediaStatus status);
     void handleError(QMediaPlayer::Error error, const QString &message);
 
-    // Move to next track, returns whether there is one
     bool advance();
 
     QMediaPlayer m_mediaPlayer;

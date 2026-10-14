@@ -59,6 +59,7 @@ Track TagReader::read(const QString &path)
     track.duration = qRound64(properties.value(Property::Duration).toDouble() * 1000);
 
     const QFileInfo fileInfo(path);
+    track.modified = fileInfo.lastModified().toSecsSinceEpoch();
     if (track.title.isEmpty()) {
         track.title = fileInfo.completeBaseName();
     }

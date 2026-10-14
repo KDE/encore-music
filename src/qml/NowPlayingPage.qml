@@ -4,15 +4,13 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
-import QtQuick.Effects
 import QtQuick.Layouts
 import QtQuick.Templates as T
 
 import org.kde.kirigami as Kirigami
 import org.kde.bigscreen.ui as BigscreenUI
 
-// Full-screen view of the current track, its controls and what plays next
-FocusScope {
+BigscreenUI.Page {
     id: root
 
     readonly property var track: Player.currentTrack
@@ -20,54 +18,8 @@ FocusScope {
     BigscreenUI.BackHandler.enabled: visible
     BigscreenUI.BackHandler.onActivated: T.StackView.view.pop()
 
-    Rectangle {
-        anchors.fill: parent
-        color: Kirigami.Theme.backgroundColor
-    }
-
-    // The artwork, blurred, fills the background
-    Image {
-        id: backgroundArtwork
-        anchors.fill: parent
+    background: Backdrop {
         source: root.track.artworkUrl
-        sourceSize.width: 256
-        sourceSize.height: 256
-        fillMode: Image.PreserveAspectCrop
-        asynchronous: true
-        visible: false
-    }
-
-    MultiEffect {
-        anchors.fill: parent
-        source: backgroundArtwork
-        visible: backgroundArtwork.status === Image.Ready
-        autoPaddingEnabled: false
-        blurEnabled: true
-        blur: 1.0
-        blurMax: 64
-        saturation: 0.2
-        opacity: 0.5
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: Kirigami.Units.veryLongDuration
-            }
-        }
-    }
-
-    // Darkens towards the bottom, behind the queue
-    Rectangle {
-        anchors.fill: parent
-        gradient: Gradient {
-            GradientStop {
-                position: 0
-                color: Qt.alpha(Kirigami.Theme.backgroundColor, 0.2)
-            }
-            GradientStop {
-                position: 1
-                color: Qt.alpha(Kirigami.Theme.backgroundColor, 0.85)
-            }
-        }
     }
 
     BigscreenUI.Label {
@@ -84,9 +36,9 @@ FocusScope {
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: upNext.top
-        anchors.leftMargin: BigscreenUI.Units.contentMargin(root.SafeArea.margins.left)
-        anchors.rightMargin: BigscreenUI.Units.contentMargin(root.SafeArea.margins.right)
-        anchors.topMargin: root.SafeArea.margins.top + Kirigami.Units.gridUnit * 3
+        anchors.leftMargin: root.contentMargins.left
+        anchors.rightMargin: root.contentMargins.right
+        anchors.topMargin: root.contentMargins.top
         anchors.bottomMargin: Kirigami.Units.gridUnit * 2
 
         visible: Player.hasTrack
@@ -283,7 +235,7 @@ FocusScope {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: Kirigami.Units.gridUnit * 2 + root.SafeArea.margins.bottom
+        anchors.bottomMargin: root.contentMargins.bottom
 
         visible: Player.hasTrack
         title: i18n("Up next")

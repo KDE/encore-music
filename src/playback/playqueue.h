@@ -12,7 +12,7 @@ class PlayQueue : public QAbstractListModel
 {
     Q_OBJECT
     QML_ELEMENT
-    QML_UNCREATABLE("Use Player.queue")
+    QML_UNCREATABLE("")
 
     Q_PROPERTY(int count READ count NOTIFY countChanged)
     Q_PROPERTY(int currentIndex READ currentIndex NOTIFY currentIndexChanged)
@@ -38,14 +38,12 @@ public:
     int count() const;
     bool isEmpty() const;
 
-    // -1 when nothing is selected
     int currentIndex() const;
     void setCurrentIndex(int index);
 
     Track currentTrack() const;
     quint64 currentId() const;
 
-    // Replaces the queue, starting at startIndex
     void setTracks(const QList<Track> &tracks, int startIndex);
     void append(const QList<Track> &tracks);
     void insertNext(const QList<Track> &tracks);

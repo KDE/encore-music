@@ -2,55 +2,21 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 import QtQuick
-import QtQuick.Layouts
 
-import org.kde.kirigami as Kirigami
 import org.kde.bigscreen.ui as BigscreenUI
 
-FocusScope {
+BigscreenUI.Page {
     id: root
 
-    property string title
-    property string iconName
-    property string text
-    property string explanation
+    property alias iconName: message.iconName
+    property alias text: message.text
+    property alias explanation: message.explanation
+    property alias helpfulAction: message.helpfulAction
 
-    BigscreenUI.Label {
-        x: BigscreenUI.Units.contentMargin(root.SafeArea.margins.left)
-        y: root.SafeArea.margins.top + Kirigami.Units.gridUnit * 2
-        text: root.title
-        type: BigscreenUI.Label.Title
-        Accessible.role: Accessible.Heading
-    }
-
-    ColumnLayout {
+    BigscreenUI.PlaceholderMessage {
+        id: message
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: root.SafeArea.margins.top / 2
-        width: Math.min(parent.width - BigscreenUI.Units.screenMargin * 2, Kirigami.Units.gridUnit * 40)
-        spacing: Kirigami.Units.largeSpacing * 2
-
-        Kirigami.Icon {
-            Layout.alignment: Qt.AlignHCenter
-            implicitWidth: Kirigami.Units.iconSizes.enormous
-            implicitHeight: Kirigami.Units.iconSizes.enormous
-            source: root.iconName
-            opacity: 0.5
-        }
-
-        BigscreenUI.Label {
-            Layout.fillWidth: true
-            text: root.text
-            type: BigscreenUI.Label.Section
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.Wrap
-        }
-
-        BigscreenUI.Label {
-            Layout.fillWidth: true
-            text: root.explanation
-            color: Kirigami.Theme.disabledTextColor
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.Wrap
-        }
+        width: Math.min(parent.width - root.contentMargins.left - root.contentMargins.right, implicitWidth)
+        focus: true
     }
 }

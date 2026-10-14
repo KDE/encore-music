@@ -4,11 +4,23 @@
 qt_add_executable(bigscreen-music
     main.cpp
 
+    library/albummodel.cpp
+    library/albummodel.h
+    library/artistmodel.cpp
+    library/artistmodel.h
     library/artworkcache.cpp
     library/artworkcache.h
+    library/library.cpp
+    library/library.h
+    library/librarydata.cpp
+    library/librarydata.h
+    library/scanner.cpp
+    library/scanner.h
     library/tagreader.cpp
     library/tagreader.h
     library/track.h
+    library/trackmodel.cpp
+    library/trackmodel.h
 
     playback/mpris.cpp
     playback/mpris.h
@@ -30,13 +42,24 @@ ecm_add_qml_module(bigscreen-music
 )
 
 ecm_target_qml_sources(bigscreen-music SOURCES
+    qml/AlbumCard.qml
+    qml/AlbumPage.qml
+    qml/AlbumsPage.qml
+    qml/ArtistCard.qml
+    qml/ArtistPage.qml
+    qml/ArtistsPage.qml
+    qml/Backdrop.qml
+    qml/HomePage.qml
+    qml/LibraryPlaceholder.qml
     qml/Main.qml
     qml/NowPlayingButton.qml
     qml/NowPlayingPage.qml
+    qml/PageHeading.qml
     qml/PlaceholderPage.qml
     qml/PlayingIndicator.qml
     qml/SettingsPage.qml
-    qml/Shell.qml
+    qml/SongsPage.qml
+    qml/TrackDelegate.qml
 )
 
 target_include_directories(bigscreen-music PRIVATE
@@ -52,6 +75,8 @@ target_link_libraries(bigscreen-music PRIVATE
     Qt6::Multimedia
     Qt6::Qml
     Qt6::Quick
+    Qt6::Sql
+    KF6::ConfigCore
     KF6::CoreAddons
     KF6::Crash
     KF6::DBusAddons

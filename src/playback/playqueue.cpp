@@ -134,14 +134,14 @@ void PlayQueue::insertNext(const QList<Track> &tracks)
         const auto current = std::find_if(m_unshuffledEntries.begin(), m_unshuffledEntries.end(), [currentId](const Entry &entry) {
             return entry.id == currentId;
         });
-        const qsizetype unshuffledPosition = current == m_unshuffledEntries.end() ? 0 : std::distance(m_unshuffledEntries.begin(), current) + 1;
-        for (qsizetype i = 0; i < entries.size(); ++i) {
+        const int unshuffledPosition = current == m_unshuffledEntries.end() ? 0 : std::distance(m_unshuffledEntries.begin(), current) + 1;
+        for (int i = 0; i < entries.size(); ++i) {
             m_unshuffledEntries.insert(unshuffledPosition + i, entries.at(i));
         }
     }
 
     beginInsertRows({}, position, position + entries.size() - 1);
-    for (qsizetype i = 0; i < entries.size(); ++i) {
+    for (int i = 0; i < entries.size(); ++i) {
         m_entries.insert(position + i, entries.at(i));
     }
     endInsertRows();

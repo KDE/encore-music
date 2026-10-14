@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Devin Lin <devin@kde.org>
 // SPDX-License-Identifier: GPL-2.0-or-later
 
+#include "library.h"
 #include "mpris.h"
 #include "player.h"
 #include "version.h"
@@ -60,6 +61,11 @@ int main(int argc, char *argv[])
 
     KDBusService service(KDBusService::Unique);
 
+    // Start reading the library before the UI loads so it's ready soooner
+    Library *library = Library::instance();
+    library->rescan();
+    QObject::connect(&application, &QCoreApplication::aboutToQuit, library, &Library::cancel);
+
     QQmlApplicationEngine engine;
     KLocalization::setupLocalizedContext(&engine);
     engine.loadFromModule("org.kde.bigscreen.music", "Main");
@@ -82,7 +88,6 @@ int main(int argc, char *argv[])
 
     player->openUrls(urlsFromArguments(parser.positionalArguments(), QDir::currentPath()));
 
-    // Launching the app again brings this window forward, and plays any files it was given
     QObject::connect(&service,
                      &KDBusService::activateRequested,
                      &engine,

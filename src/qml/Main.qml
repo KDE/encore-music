@@ -2,39 +2,237 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 import QtQuick
+import QtQuick.Layouts
+import QtQuick.Templates as T
 
+import org.kde.kirigami as Kirigami
 import org.kde.bigscreen.ui as BigscreenUI
 
 BigscreenUI.ApplicationWindow {
     id: root
 
-    width: 1920
-    height: 1080
+    width: 1280
+    height: 700
     visible: true
     title: i18n("Music")
 
+    // Whether we are in "narrow" mode (for handhelds, smaller screens)
+    readonly property bool narrow: width < Kirigami.Units.gridUnit * 75
+
+    component Section: Kirigami.Action {
+        required property Item page
+    }
+
+    readonly property list<Section> sections: [
+        Section {
+            text: i18n("Home")
+            icon.name: "go-home-symbolic"
+            page: HomePage {}
+        },
+        Section {
+            text: i18n("Albums")
+            icon.name: "media-album-cover"
+            page: AlbumsPage {}
+        },
+        Section {
+            text: i18n("Artists")
+            icon.name: "view-media-artist"
+            page: ArtistsPage {}
+        },
+        Section {
+            text: i18n("Songs")
+            icon.name: "view-media-track"
+            page: SongsPage {}
+        },
+        Section {
+            text: i18n("Playlists")
+            icon.name: "view-media-playlist"
+            page: PlaceholderPage {
+                title: i18n("Playlists")
+                iconName: "view-media-playlist"
+                text: i18n("No playlists yet")
+                explanation: i18n("Playlists you create will appear here.")
+            }
+        },
+        Section {
+            text: i18n("Search")
+            icon.name: "search"
+            displayHint: Kirigami.DisplayHint.IconOnly
+            page: PlaceholderPage {
+                title: i18n("Search")
+                iconName: "search"
+                text: i18n("Search your music")
+                explanation: i18n("Find songs, albums and artists.")
+            }
+        }
+    ]
+
+    property int currentIndex: 0
+    readonly property Item currentPage: sections[currentIndex].page
+    readonly property Item navigation: narrow ? sectionSidebar : tabBar
+
+    function showSection(index: int): void {
+        currentIndex = index;
+        tabBar.currentIndex = index;
+        sectionSidebar.currentIndex = index;
+        showPage(currentPage);
+    }
+
     function openNowPlaying(): void {
-        if (!(stack.currentItem instanceof NowPlayingPage)) {
-            stack.push(nowPlayingPage);
+        if (!(pageStack.currentItem instanceof NowPlayingPage)) {
+            pageStack.push(nowPlayingPage);
+        }
+    }
+
+    function openAlbum(key: string): void {
+        pageStack.push(albumPage, { albumKey: key });
+    }
+
+    function openArtist(key: string): void {
+        // Going to the artist of an album opened from that artist goes back to them
+        const previous = pageStack.depth > 1 ? pageStack.get(pageStack.depth - 2) : null;
+        if (previous instanceof ArtistPage && previous.artistKey === key) {
+            pageStack.pop();
+        } else {
+            pageStack.push(artistPage, { artistKey: key });
         }
     }
 
     function openSettings(): void {
-        if (!(stack.currentItem instanceof SettingsPage)) {
-            stack.push(settingsPage);
+        if (!(pageStack.currentItem instanceof SettingsPage)) {
+            pageStack.push(settingsPage);
         }
     }
 
-    BigscreenUI.StackView {
-        id: stack
-        anchors.fill: parent
-        focus: true
-        initialItem: Shell {}
+    initialPage: currentPage
+
+    navigationBar: narrow ? (Player.hasTrack ? compactHeader : null) : tabBar
+    sidebar: narrow ? sectionSidebar : null
+
+    // Keep focus on the navigation when switching layouts
+    onNarrowChanged: {
+        if (tabBar.activeFocus || sectionSidebar.activeFocus || compactHeader.activeFocus) {
+            navigation.forceActiveFocus();
+        }
     }
+
+    BigscreenUI.BackHandler.enabled: pageStack.depth <= 1
+    BigscreenUI.BackHandler.onActivated: {
+        if (!navigation.activeFocus) {
+            navigation.forceActiveFocus();
+        } else if (currentIndex !== 0) {
+            showSection(0);
+        }
+    }
+
+    // The artwork of whatever is selected in the current section
+    Backdrop {
+        anchors.fill: parent
+        z: -1
+        delay: 200
+        source: root.currentPage.backdropSource ?? ""
+    }
+
+    readonly property list<Item> navigationItems: [
+        BigscreenUI.NavigationBar {
+            id: tabBar
+
+            leading: RowLayout {
+                spacing: Kirigami.Units.largeSpacing * 2
+
+                Kirigami.Icon {
+                    implicitWidth: Kirigami.Units.iconSizes.medium
+                    implicitHeight: Kirigami.Units.iconSizes.medium
+                    source: "folder-music"
+                }
+                BigscreenUI.Label {
+                    text: i18n("Music")
+                    type: BigscreenUI.Label.Heading
+                    font.weight: Font.Light
+                }
+            }
+
+            actions: root.sections
+            onActivated: index => root.showSection(index)
+
+            trailing: RowLayout {
+                spacing: Kirigami.Units.largeSpacing
+
+                NowPlayingButton {
+                    onClicked: root.openNowPlaying()
+                }
+
+                BigscreenUI.NavigationTab {
+                    action: Kirigami.Action {
+                        text: i18n("Settings")
+                        icon.name: "configure"
+                        displayHint: Kirigami.DisplayHint.IconOnly
+                        onTriggered: root.openSettings()
+                    }
+                }
+            }
+        },
+
+        // On a narrow screen, the current song at the top
+        FocusScope {
+            id: compactHeader
+
+            height: compactNowPlayingButton.height + Kirigami.Units.gridUnit * 2
+
+            NowPlayingButton {
+                id: compactNowPlayingButton
+
+                anchors.right: parent.right
+                anchors.rightMargin: parent.SafeArea.margins.right
+                anchors.bottom: parent.bottom
+                focus: true
+
+                Keys.onLeftPressed: sectionSidebar.forceActiveFocus()
+                onClicked: root.openNowPlaying()
+            }
+        },
+
+        BigscreenUI.Sidebar {
+            id: sectionSidebar
+
+            title: i18n("Music")
+            iconName: "folder-music"
+
+            actions: [...root.sections, separatorAction, settingsAction]
+            onActivated: index => {
+                if (index < root.sections.length) {
+                    root.showSection(index);
+                } else {
+                    currentIndex = root.currentIndex;
+                }
+            }
+
+            Kirigami.Action {
+                id: separatorAction
+                separator: true
+            }
+            Kirigami.Action {
+                id: settingsAction
+                text: i18n("Settings")
+                icon.name: "configure"
+                onTriggered: root.openSettings()
+            }
+        }
+    ]
 
     Component {
         id: nowPlayingPage
         NowPlayingPage {}
+    }
+
+    Component {
+        id: albumPage
+        AlbumPage {}
+    }
+
+    Component {
+        id: artistPage
+        ArtistPage {}
     }
 
     Component {

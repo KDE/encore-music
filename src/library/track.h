@@ -34,10 +34,9 @@ public:
     int trackNumber = 0;
     int discNumber = 0;
     int year = 0;
-    // In milliseconds
-    qint64 duration = 0;
-    // A local image file, either cached embedded artwork or an image next to the track
+    qint64 duration = 0; // ms
     QUrl artworkUrl;
+    qint64 modified = 0;
 
     bool isValid() const
     {

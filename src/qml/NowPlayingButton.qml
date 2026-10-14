@@ -8,13 +8,12 @@ import QtQuick.Templates as T
 import org.kde.kirigami as Kirigami
 import org.kde.bigscreen.ui as BigscreenUI
 
-// The current track in the navigation bar, which opens the now playing view
 T.AbstractButton {
     id: root
 
     visible: Player.hasTrack
 
-    implicitHeight: Kirigami.Units.gridUnit * 3
+    implicitHeight: implicitContentHeight + topPadding + bottomPadding
     implicitWidth: implicitContentWidth + leftPadding + rightPadding
 
     padding: Kirigami.Units.smallSpacing * 2
@@ -35,7 +34,7 @@ T.AbstractButton {
     }
 
     contentItem: RowLayout {
-        spacing: Kirigami.Units.largeSpacing
+        spacing: 0
 
         Kirigami.ShadowedImage {
             Layout.fillHeight: true
@@ -60,6 +59,7 @@ T.AbstractButton {
         }
 
         ColumnLayout {
+            Layout.leftMargin: Kirigami.Units.largeSpacing
             Layout.maximumWidth: Kirigami.Units.gridUnit * 14
             spacing: 0
 
@@ -81,6 +81,7 @@ T.AbstractButton {
         }
 
         PlayingIndicator {
+            Layout.leftMargin: Kirigami.Units.largeSpacing + Kirigami.Units.smallSpacing
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredHeight: implicitHeight
             playing: Player.playing

@@ -41,8 +41,10 @@ find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
     Qml
     Quick
     QuickControls2
+    Sql
 )
 find_package(KF6 ${KF_MIN_VERSION} REQUIRED COMPONENTS
+    Config
     CoreAddons
     Crash
     DBusAddons
