@@ -15,6 +15,12 @@ BigscreenUI.Page {
 
     readonly property var track: Player.currentTrack
 
+    // Smaller type and controls for handhelds and small windows
+    readonly property bool compact: width < Kirigami.Units.gridUnit * 60 || height < Kirigami.Units.gridUnit * 48
+
+    // Too short for the queue as well
+    readonly property bool showUpNext: height >= Kirigami.Units.gridUnit * 30
+
     BigscreenUI.BackHandler.enabled: visible
     BigscreenUI.BackHandler.onActivated: T.StackView.view.pop()
 
@@ -35,19 +41,19 @@ BigscreenUI.Page {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.bottom: upNext.top
+        anchors.bottom: root.showUpNext ? upNext.top : parent.bottom
         anchors.leftMargin: root.contentMargins.left
         anchors.rightMargin: root.contentMargins.right
         anchors.topMargin: root.contentMargins.top
-        anchors.bottomMargin: Kirigami.Units.gridUnit * 2
+        anchors.bottomMargin: root.showUpNext ? Kirigami.Units.gridUnit * (root.compact ? 1 : 2) : root.contentMargins.bottom
 
         visible: Player.hasTrack
-        spacing: Kirigami.Units.gridUnit * 4
+        spacing: Kirigami.Units.gridUnit * (root.compact ? 2 : 4)
 
         Kirigami.ShadowedImage {
             id: artwork
 
-            readonly property real size: Math.min(content.height, content.width * 0.4)
+            readonly property real size: Math.min(content.height, content.width * (root.compact ? 0.35 : 0.4))
 
             Layout.preferredWidth: size
             Layout.preferredHeight: size
@@ -66,7 +72,7 @@ BigscreenUI.Page {
 
             Kirigami.Icon {
                 anchors.centerIn: parent
-                width: Kirigami.Units.iconSizes.enormous
+                width: Math.min(Kirigami.Units.iconSizes.enormous, artwork.size / 2)
                 height: width
                 visible: artwork.status !== Image.Ready
                 source: "media-album-cover"
@@ -83,7 +89,7 @@ BigscreenUI.Page {
                 Layout.fillWidth: true
                 visible: text.length > 0
                 text: root.track.year > 0 ? i18nc("@info album title and release year", "%1 · %2", root.track.album, root.track.year) : root.track.album
-                type: BigscreenUI.Label.Heading
+                type: root.compact ? BigscreenUI.Label.Body : BigscreenUI.Label.Heading
                 color: Kirigami.Theme.disabledTextColor
                 elide: Text.ElideRight
             }
@@ -91,7 +97,7 @@ BigscreenUI.Page {
             BigscreenUI.Label {
                 Layout.fillWidth: true
                 text: root.track.title
-                type: BigscreenUI.Label.Display
+                type: root.compact ? BigscreenUI.Label.Section : BigscreenUI.Label.Display
                 wrapMode: Text.Wrap
                 maximumLineCount: 2
                 elide: Text.ElideRight
@@ -102,7 +108,7 @@ BigscreenUI.Page {
                 Layout.fillWidth: true
                 visible: text.length > 0
                 text: root.track.artist
-                type: BigscreenUI.Label.Section
+                type: root.compact ? BigscreenUI.Label.Heading : BigscreenUI.Label.Section
                 elide: Text.ElideRight
             }
 
@@ -110,7 +116,7 @@ BigscreenUI.Page {
                 id: seekBar
 
                 Layout.fillWidth: true
-                Layout.topMargin: Kirigami.Units.gridUnit * 2
+                Layout.topMargin: Kirigami.Units.gridUnit * (root.compact ? 1 : 2)
 
                 from: 0
                 to: Math.max(1, Player.duration)
@@ -147,8 +153,8 @@ BigscreenUI.Page {
             }
 
             RowLayout {
-                Layout.topMargin: Kirigami.Units.gridUnit
-                spacing: Kirigami.Units.gridUnit
+                Layout.topMargin: root.compact ? 0 : Kirigami.Units.gridUnit
+                spacing: root.compact ? Kirigami.Units.largeSpacing : Kirigami.Units.gridUnit
 
                 BigscreenUI.RoundButton {
                     id: shuffleButton
@@ -176,10 +182,10 @@ BigscreenUI.Page {
                     id: playButton
                     Layout.alignment: Qt.AlignVCenter
                     focus: true
-                    padding: Kirigami.Units.gridUnit * 1.5
+                    padding: Kirigami.Units.gridUnit * (root.compact ? 1 : 1.5)
                     icon.name: Player.playing ? "media-playback-pause" : "media-playback-start"
-                    icon.width: Kirigami.Units.iconSizes.large
-                    icon.height: Kirigami.Units.iconSizes.large
+                    icon.width: root.compact ? Kirigami.Units.iconSizes.medium : Kirigami.Units.iconSizes.large
+                    icon.height: icon.width
                     text: Player.playing ? i18n("Pause") : i18n("Play")
                     KeyNavigation.right: nextButton
                     KeyNavigation.up: seekBar
@@ -237,7 +243,7 @@ BigscreenUI.Page {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: root.contentMargins.bottom
 
-        visible: Player.hasTrack
+        visible: Player.hasTrack && root.showUpNext
         title: i18n("Up next")
         model: Player.queue
 
@@ -250,7 +256,7 @@ BigscreenUI.Page {
             required property url artworkUrl
             required property bool isCurrent
 
-            artworkWidth: Kirigami.Units.gridUnit * 8
+            artworkWidth: Kirigami.Units.gridUnit * (root.compact ? 6 : 8)
             artworkHeight: artworkWidth
             text: title
             subtitle: isCurrent ? i18n("Now playing") : artist
