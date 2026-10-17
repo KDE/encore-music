@@ -106,12 +106,12 @@ BigscreenUI.ApplicationWindow {
 
     initialPage: currentPage
 
-    navigationBar: narrow ? (Player.hasTrack ? compactHeader : null) : tabBar
+    navigationBar: narrow ? null : tabBar
     sidebar: narrow ? sectionSidebar : null
 
     // Keep focus on the navigation when switching layouts
     onNarrowChanged: {
-        if (tabBar.activeFocus || sectionSidebar.activeFocus || compactHeader.activeFocus) {
+        if (tabBar.activeFocus || sectionSidebar.activeFocus) {
             navigation.forceActiveFocus();
         }
     }
@@ -173,25 +173,6 @@ BigscreenUI.ApplicationWindow {
             }
         },
 
-        // On a narrow screen, the current song at the top
-        FocusScope {
-            id: compactHeader
-
-            height: compactNowPlayingButton.height + Kirigami.Units.gridUnit * 2
-
-            NowPlayingButton {
-                id: compactNowPlayingButton
-
-                anchors.right: parent.right
-                anchors.rightMargin: parent.SafeArea.margins.right
-                anchors.bottom: parent.bottom
-                focus: true
-
-                Keys.onLeftPressed: sectionSidebar.forceActiveFocus()
-                onClicked: root.openNowPlaying()
-            }
-        },
-
         BigscreenUI.Sidebar {
             id: sectionSidebar
 
@@ -199,6 +180,11 @@ BigscreenUI.ApplicationWindow {
             iconName: "folder-music"
 
             actions: [...root.sections, separatorAction, settingsAction]
+
+            footer: NowPlayingEntry {
+                sidebar: sectionSidebar
+                onClicked: root.openNowPlaying()
+            }
             onActivated: index => {
                 if (index < root.sections.length) {
                     root.showSection(index);
@@ -219,6 +205,21 @@ BigscreenUI.ApplicationWindow {
             }
         }
     ]
+
+    BigscreenUI.Toast {
+        id: toast
+        z: 1
+        timeout: 4000
+        anchors.bottomMargin: BigscreenUI.Units.verticalScreenMargin
+    }
+
+    Connections {
+        target: Player
+
+        function onErrorOccurred(message: string): void {
+            toast.show(message, "dialog-warning");
+        }
+    }
 
     Component {
         id: nowPlayingPage

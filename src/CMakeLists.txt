@@ -53,6 +53,7 @@ ecm_target_qml_sources(bigscreen-music SOURCES
     qml/LibraryPlaceholder.qml
     qml/Main.qml
     qml/NowPlayingButton.qml
+    qml/NowPlayingEntry.qml
     qml/NowPlayingPage.qml
     qml/PageHeading.qml
     qml/PlaceholderPage.qml

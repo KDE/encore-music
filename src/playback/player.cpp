@@ -4,6 +4,8 @@
 #include "player.h"
 #include "tagreader.h"
 
+#include <KLocalizedString>
+
 #include <QFuture>
 #include <QJSEngine>
 #include <QRandomGenerator>
@@ -290,7 +292,7 @@ void Player::load(const QList<QUrl> &urls, LoadAction action)
         }
 
         if (tracks.isEmpty()) {
-            Q_EMIT errorOccurred(u"No audio files found"_s);
+            Q_EMIT errorOccurred(i18n("No music found to play"));
             return;
         }
 
@@ -359,7 +361,7 @@ void Player::handleError(QMediaPlayer::Error error, const QString &message)
     }
 
     qWarning() << "Could not play" << m_mediaPlayer.source() << message;
-    Q_EMIT errorOccurred(message);
+    Q_EMIT errorOccurred(i18nc("@info %1 is a song title", "Couldn't play “%1”", m_queue->currentTrack().title));
 
     // Skip the broken track, but give up once every track has failed
     if (++m_consecutiveErrors < m_queue->count()) {
