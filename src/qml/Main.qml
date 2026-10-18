@@ -122,6 +122,8 @@ BigscreenUI.ApplicationWindow {
             navigation.forceActiveFocus();
         } else if (currentIndex !== 0) {
             showSection(0);
+        } else {
+            root.quitDialog.open()
         }
     }
 

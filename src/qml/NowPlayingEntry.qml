@@ -127,7 +127,7 @@ T.AbstractButton {
                 elide: Text.ElideRight
                 Accessible.ignored: true
             }
-            BigscreenUI.MediaProgressBar {
+            BigscreenUI.ProgressBar {
                 Layout.fillWidth: true
                 Layout.topMargin: Kirigami.Units.smallSpacing
                 implicitHeight: 3
