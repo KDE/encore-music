@@ -4,6 +4,7 @@
 #include "trackmodel.h"
 #include "library.h"
 #include "player.h"
+#include "searchquery.h"
 
 TrackModel::TrackModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -98,6 +99,21 @@ void TrackModel::setArtistKey(const QString &key)
     refresh();
 }
 
+QString TrackModel::searchText() const
+{
+    return m_searchText;
+}
+
+void TrackModel::setSearchText(const QString &text)
+{
+    if (m_searchText == text) {
+        return;
+    }
+    m_searchText = text;
+    Q_EMIT searchTextChanged();
+    refresh();
+}
+
 Album TrackModel::album() const
 {
     return Library::instance()->album(m_albumKey);
@@ -131,6 +147,14 @@ void TrackModel::refresh()
         }
     } else {
         rows = data.tracksByTitle;
+    }
+
+    const SearchQuery query(m_searchText);
+    if (!query.isEmpty()) {
+        rows.removeIf([&data, &query](int row) {
+            const Track &track = data.tracks.at(row);
+            return !query.matches({track.title, track.artist, track.album});
+        });
     }
     setRows(rows);
 }

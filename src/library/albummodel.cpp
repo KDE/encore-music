@@ -3,6 +3,7 @@
 
 #include "albummodel.h"
 #include "library.h"
+#include "searchquery.h"
 
 #include <numeric>
 
@@ -78,6 +79,21 @@ void AlbumModel::setArtistKey(const QString &key)
     refresh();
 }
 
+QString AlbumModel::searchText() const
+{
+    return m_searchText;
+}
+
+void AlbumModel::setSearchText(const QString &text)
+{
+    if (m_searchText == text) {
+        return;
+    }
+    m_searchText = text;
+    Q_EMIT searchTextChanged();
+    refresh();
+}
+
 AlbumModel::SortOrder AlbumModel::sortOrder() const
 {
     return m_sortOrder;
@@ -125,6 +141,14 @@ void AlbumModel::refresh()
     } else {
         rows.resize(data.albums.size());
         std::iota(rows.begin(), rows.end(), 0);
+    }
+
+    const SearchQuery query(m_searchText);
+    if (!query.isEmpty()) {
+        rows.removeIf([&data, &query](int row) {
+            const Album &album = data.albums.at(row);
+            return !query.matches({album.title, album.artist});
+        });
     }
     if (m_limit >= 0 && rows.size() > m_limit) {
         rows.resize(m_limit);

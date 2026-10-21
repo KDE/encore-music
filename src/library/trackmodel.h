@@ -8,7 +8,7 @@
 #include <QAbstractListModel>
 #include <QtQmlIntegration>
 
-// Songs in the library, can be filtered by album or artist
+// Songs in the library, can be filtered by album, artist or search text
 class TrackModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -16,6 +16,7 @@ class TrackModel : public QAbstractListModel
 
     Q_PROPERTY(QString albumKey READ albumKey WRITE setAlbumKey NOTIFY albumKeyChanged)
     Q_PROPERTY(QString artistKey READ artistKey WRITE setArtistKey NOTIFY artistKeyChanged)
+    Q_PROPERTY(QString searchText READ searchText WRITE setSearchText NOTIFY searchTextChanged)
 
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
     Q_PROPERTY(Album album READ album NOTIFY countChanged)
@@ -47,6 +48,9 @@ public:
     QString artistKey() const;
     void setArtistKey(const QString &key);
 
+    QString searchText() const;
+    void setSearchText(const QString &text);
+
     Album album() const;
     Artist artist() const;
 
@@ -56,6 +60,7 @@ public:
 Q_SIGNALS:
     void albumKeyChanged();
     void artistKeyChanged();
+    void searchTextChanged();
     void countChanged();
 
 private:
@@ -65,6 +70,7 @@ private:
 
     QString m_albumKey;
     QString m_artistKey;
+    QString m_searchText;
 
     QList<int> m_rows;
 };

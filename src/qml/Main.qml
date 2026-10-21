@@ -58,12 +58,7 @@ BigscreenUI.ApplicationWindow {
             text: i18n("Search")
             icon.name: "search"
             displayHint: Kirigami.DisplayHint.IconOnly
-            page: PlaceholderPage {
-                title: i18n("Search")
-                iconName: "search"
-                text: i18n("Search your music")
-                explanation: i18n("Find songs, albums and artists.")
-            }
+            page: SearchPage {}
         }
     ]
 

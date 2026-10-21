@@ -12,6 +12,7 @@ class AlbumModel : public QAbstractListModel
     QML_ELEMENT
 
     Q_PROPERTY(QString artistKey READ artistKey WRITE setArtistKey NOTIFY artistKeyChanged)
+    Q_PROPERTY(QString searchText READ searchText WRITE setSearchText NOTIFY searchTextChanged)
 
     Q_PROPERTY(SortOrder sortOrder READ sortOrder WRITE setSortOrder NOTIFY sortOrderChanged)
     Q_PROPERTY(int limit READ limit WRITE setLimit NOTIFY limitChanged)
@@ -44,6 +45,9 @@ public:
     QString artistKey() const;
     void setArtistKey(const QString &key);
 
+    QString searchText() const;
+    void setSearchText(const QString &text);
+
     SortOrder sortOrder() const;
     void setSortOrder(SortOrder order);
 
@@ -53,6 +57,7 @@ public:
 
 Q_SIGNALS:
     void artistKeyChanged();
+    void searchTextChanged();
     void sortOrderChanged();
     void limitChanged();
     void countChanged();
@@ -62,6 +67,7 @@ private:
     void setRows(const QList<int> &rows);
 
     QString m_artistKey;
+    QString m_searchText;
     SortOrder m_sortOrder = Title;
     int m_limit = -1;
 

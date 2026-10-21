@@ -6,12 +6,13 @@
 #include <QAbstractListModel>
 #include <QtQmlIntegration>
 
-// Album artists in the library, by name
+// Album artists in the library, by name, can be filtered by search text
 class ArtistModel : public QAbstractListModel
 {
     Q_OBJECT
     QML_ELEMENT
 
+    Q_PROPERTY(QString searchText READ searchText WRITE setSearchText NOTIFY searchTextChanged)
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
 
 public:
@@ -30,11 +31,17 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
 
+    QString searchText() const;
+    void setSearchText(const QString &text);
+
 Q_SIGNALS:
+    void searchTextChanged();
     void countChanged();
 
 private:
     void refresh();
+    void setRows(const QList<int> &rows);
 
-    int m_count = 0;
+    QString m_searchText;
+    QList<int> m_rows;
 };

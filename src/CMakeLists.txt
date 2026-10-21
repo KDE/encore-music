@@ -15,6 +15,8 @@ qt_add_executable(bigscreen-music
     library/librarydata.cpp
     library/librarydata.h
     library/scanner.cpp
+    library/searchquery.cpp
+    library/searchquery.h
     library/scanner.h
     library/tagreader.cpp
     library/tagreader.h
@@ -58,6 +60,7 @@ ecm_target_qml_sources(bigscreen-music SOURCES
     qml/PageHeading.qml
     qml/PlaceholderPage.qml
     qml/PlayingIndicator.qml
+    qml/SearchPage.qml
     qml/SettingsPage.qml
     qml/SongsPage.qml
     qml/TrackDelegate.qml
