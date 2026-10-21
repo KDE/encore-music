@@ -25,8 +25,7 @@ T.AbstractButton {
     Accessible.name: i18nc("@action:button %1 is a song title, %2 its artist", "Now playing: %1 by %2", Player.currentTrack.title, Player.currentTrack.artist)
 
     onPressed: root.forceActiveFocus()
-    Keys.onReturnPressed: click()
-    Keys.onEnterPressed: click()
+    BigscreenUI.EnterKeyHandler.enabled: true
 
     background: BigscreenUI.DelegateBackground {
         control: root

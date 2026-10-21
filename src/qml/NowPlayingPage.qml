@@ -185,7 +185,7 @@ BigscreenUI.Page {
                     padding: Kirigami.Units.gridUnit * (root.compact ? 1 : 1.5)
                     icon.name: Player.playing ? "media-playback-pause" : "media-playback-start"
                     icon.width: root.compact ? Kirigami.Units.iconSizes.medium : Kirigami.Units.iconSizes.large
-                    icon.height: icon.width
+                    icon.height: root.compact ? Kirigami.Units.iconSizes.medium : Kirigami.Units.iconSizes.large
                     text: Player.playing ? i18n("Pause") : i18n("Play")
                     KeyNavigation.right: nextButton
                     KeyNavigation.up: seekBar
