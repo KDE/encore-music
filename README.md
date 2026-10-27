@@ -3,7 +3,7 @@ SPDX-FileCopyrightText: None
 SPDX-License-Identifier: GPL-2.0-or-later
 -->
 
-# Bigscreen Music
+# Encore Music
 
 A music player for Plasma Bigscreen, built with [Bigscreen UI](https://invent.kde.org/devinlin/bigscreen-ui).
 
@@ -25,11 +25,11 @@ Features:
 ```bash
 cmake -B build
 cmake --build build
-./build/bin/bigscreen-music
+./build/bin/encore-music
 ```
 
 ## Stored data
 
-* `~/.config/bigscreen-musicrc` - Settings
-* `~/.local/share/bigscreen-music/library.sqlite` - Scanned library database
-* `~/.cache/bigscreen-music/covers/` - Cover art cache
+* `~/.config/encoremusicrc` - Settings
+* `~/.local/share/encoremusic/library.sqlite` - Scanned library database
+* `~/.cache/encoremusic/covers/` - Cover art cache

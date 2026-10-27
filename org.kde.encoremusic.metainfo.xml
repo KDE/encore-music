@@ -4,23 +4,23 @@ SPDX-FileCopyrightText: 2026 Devin Lin <devin@kde.org>
 SPDX-License-Identifier: CC0-1.0
 -->
 <component type="desktop-application">
-  <id>org.kde.bigscreen.music</id>
+  <id>org.kde.encoremusic</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0-or-later</project_license>
   <content_rating type="oars-1.1"/>
-  <name>Bigscreen Music</name>
-  <summary>Enjoy your music collection on the big screen</summary>
+  <name>Encore Music</name>
+  <summary>Browse and play your music collection</summary>
   <developer id="kde.org">
     <name translate="no">KDE</name>
   </developer>
   <description>
     <p>A music player for Plasma Bigscreen, designed to be used with arrow navigation.</p>
   </description>
-  <launchable type="desktop-id">org.kde.bigscreen.music.desktop</launchable>
+  <launchable type="desktop-id">org.kde.encoremusic.desktop</launchable>
   <url type="homepage">https://invent.kde.org/devinlin/bigscreen-music</url>
   <url type="vcs-browser">https://invent.kde.org/devinlin/bigscreen-music</url>
   <url type="contribute">https://community.kde.org/Get_Involved</url>
-  <url type="donation">https://kde.org/donate/?app=org.kde.bigscreen.music</url>
+  <url type="donation">https://kde.org/donate/?app=org.kde.encoremusic</url>
   <recommends>
     <control>keyboard</control>
     <control>gamepad</control>
@@ -31,6 +31,6 @@ SPDX-License-Identifier: CC0-1.0
     <display_length compare="ge">1280</display_length>
   </requires>
   <provides>
-    <binary>bigscreen-music</binary>
+    <binary>encore-music</binary>
   </provides>
 </component>

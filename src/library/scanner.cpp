@@ -14,7 +14,7 @@
 
 using namespace Qt::StringLiterals;
 
-Q_LOGGING_CATEGORY(SCANNER, "org.kde.bigscreen.music.scanner", QtWarningMsg)
+Q_LOGGING_CATEGORY(SCANNER, "org.kde.encoremusic.scanner", QtWarningMsg)
 
 // Bump when the table changes, to start again with an empty one
 constexpr int SCHEMA_VERSION = 1;

@@ -14,7 +14,7 @@ BigscreenUI.ApplicationWindow {
     width: 1280
     height: 700
     visible: true
-    title: i18n("Music")
+    title: i18n("Encore Music")
 
     // Whether we are in "narrow" mode (for handhelds, smaller screens)
     readonly property bool narrow: width < Kirigami.Units.gridUnit * 75
@@ -143,7 +143,7 @@ BigscreenUI.ApplicationWindow {
                     source: "folder-music"
                 }
                 BigscreenUI.Label {
-                    text: i18n("Music")
+                    text: root.title
                     type: BigscreenUI.Label.Heading
                     font.weight: Font.Light
                 }
@@ -173,7 +173,7 @@ BigscreenUI.ApplicationWindow {
         BigscreenUI.Sidebar {
             id: sectionSidebar
 
-            title: i18n("Music")
+            title: root.title
             iconName: "folder-music"
 
             actions: [...root.sections, separatorAction, settingsAction]

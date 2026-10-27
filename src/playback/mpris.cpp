@@ -28,7 +28,7 @@ Mpris::Mpris(Player *player, QObject *parent)
 
     QDBusConnection bus = QDBusConnection::sessionBus();
     bus.registerObject(ObjectPath, this, QDBusConnection::ExportAdaptors);
-    bus.registerService(u"org.mpris.MediaPlayer2.bigscreen-music"_s);
+    bus.registerService(u"org.mpris.MediaPlayer2.encoremusic"_s);
 }
 
 MediaPlayer2Adaptor::MediaPlayer2Adaptor(Mpris *mpris)
@@ -327,7 +327,7 @@ QDBusObjectPath MediaPlayer2PlayerAdaptor::currentTrackId() const
     if (!m_player->hasTrack()) {
         return QDBusObjectPath(u"/org/mpris/MediaPlayer2/TrackList/NoTrack"_s);
     }
-    return QDBusObjectPath(u"/org/kde/bigscreen_music/track/%1"_s.arg(m_player->queue()->currentId()));
+    return QDBusObjectPath(u"/org/kde/encoremusic/track/%1"_s.arg(m_player->queue()->currentId()));
 }
 
 void MediaPlayer2PlayerAdaptor::notifyChanged(const QVariantMap &properties)

@@ -3,7 +3,7 @@
 
 cmake_minimum_required(VERSION 3.24)
 
-project(bigscreen-music VERSION 0.1.0)
+project(encoremusic VERSION 0.1.0)
 
 set(QT_MIN_VERSION "6.11.0")
 set(KF_MIN_VERSION "6.30.0")
@@ -28,7 +28,7 @@ include(ECMQmlModule)
 include(FeatureSummary)
 
 ecm_setup_version(${PROJECT_VERSION}
-    VARIABLE_PREFIX BIGSCREENMUSIC
+    VARIABLE_PREFIX ENCOREMUSIC
     VERSION_HEADER ${CMAKE_CURRENT_BINARY_DIR}/version.h
 )
 
@@ -63,9 +63,9 @@ endif()
 
 add_subdirectory(src)
 
-configure_file(org.kde.bigscreen.music.desktop.in ${CMAKE_CURRENT_BINARY_DIR}/org.kde.bigscreen.music.desktop @ONLY)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.bigscreen.music.desktop DESTINATION ${KDE_INSTALL_APPDIR})
-install(FILES org.kde.bigscreen.music.metainfo.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
+configure_file(org.kde.encoremusic.desktop.in ${CMAKE_CURRENT_BINARY_DIR}/org.kde.encoremusic.desktop @ONLY)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.encoremusic.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+install(FILES org.kde.encoremusic.metainfo.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

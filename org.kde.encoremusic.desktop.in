@@ -2,9 +2,10 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 [Desktop Entry]
-Name=Music
-Comment=Enjoy your music collection on the big screen
-Exec=@CMAKE_INSTALL_FULL_BINDIR@/bigscreen-music %U
+Name=Encore Music
+GenericName=Music Player
+Comment=Browse and play your music collection
+Exec=@CMAKE_INSTALL_FULL_BINDIR@/encore-music %U
 Icon=folder-music
 Type=Application
 Terminal=false

@@ -39,11 +39,11 @@ int main(int argc, char *argv[])
 
     QGuiApplication application(argc, argv);
 
-    KLocalizedString::setApplicationDomain("bigscreen-music");
-    KAboutData aboutData(u"bigscreen-music"_s,
-                         i18n("Music"),
-                         QStringLiteral(BIGSCREENMUSIC_VERSION_STRING),
-                         i18n("Enjoy your music collection on the big screen"),
+    KLocalizedString::setApplicationDomain("encoremusic");
+    KAboutData aboutData(u"encoremusic"_s,
+                         i18n("Encore Music"),
+                         QStringLiteral(ENCOREMUSIC_VERSION_STRING),
+                         i18n("Browse and play your music collection"),
                          KAboutLicense::GPL_V2,
                          i18n("© 2026 KDE Community"));
     aboutData.addAuthor(i18n("Devin Lin"), i18n("Maintainer"), u"devin@kde.org"_s);
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     aboutData.setHomepage(u"https://invent.kde.org/devinlin/bigscreen-music"_s);
     aboutData.setBugAddress("https://invent.kde.org/devinlin/bigscreen-music/-/issues");
     aboutData.setUrl(KAboutData::VCSBrowser, u"https://invent.kde.org/devinlin/bigscreen-music"_s);
-    aboutData.setDesktopFileName(u"org.kde.bigscreen.music"_s);
+    aboutData.setDesktopFileName(u"org.kde.encoremusic"_s);
     KAboutData::setApplicationData(aboutData);
     QGuiApplication::setWindowIcon(QIcon::fromTheme(u"folder-music"_s));
 
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     KLocalization::setupLocalizedContext(&engine);
-    engine.loadFromModule("org.kde.bigscreen.music", "Main");
+    engine.loadFromModule("org.kde.encoremusic", "Main");
 
     if (engine.rootObjects().isEmpty()) {
         return 1;
