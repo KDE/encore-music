@@ -140,7 +140,7 @@ BigscreenUI.ApplicationWindow {
                 Kirigami.Icon {
                     implicitWidth: Kirigami.Units.iconSizes.medium
                     implicitHeight: Kirigami.Units.iconSizes.medium
-                    source: "folder-music"
+                    source: "org.kde.encoremusic"
                 }
                 BigscreenUI.Label {
                     text: root.title
@@ -174,7 +174,7 @@ BigscreenUI.ApplicationWindow {
             id: sectionSidebar
 
             title: root.title
-            iconName: "folder-music"
+            iconName: "org.kde.encoremusic"
 
             actions: [...root.sections, separatorAction, settingsAction]
 

@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     KAboutData aboutData(u"encoremusic"_s,
                          i18n("Encore Music"),
                          QStringLiteral(ENCOREMUSIC_VERSION_STRING),
-                         i18n("Browse and play your music collection"),
+                         i18n("Play your music collection"),
                          KAboutLicense::GPL_V2,
                          i18n("© 2026 KDE Community"));
     aboutData.addAuthor(i18n("Devin Lin"), i18n("Maintainer"), u"devin@kde.org"_s);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     aboutData.setUrl(KAboutData::VCSBrowser, u"https://invent.kde.org/devinlin/bigscreen-music"_s);
     aboutData.setDesktopFileName(u"org.kde.encoremusic"_s);
     KAboutData::setApplicationData(aboutData);
-    QGuiApplication::setWindowIcon(QIcon::fromTheme(u"folder-music"_s));
+    QGuiApplication::setWindowIcon(QIcon::fromTheme(u"org.kde.encoremusic"_s));
 
     KCrash::initialize();
 

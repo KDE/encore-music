@@ -66,6 +66,7 @@ add_subdirectory(src)
 configure_file(org.kde.encoremusic.desktop.in ${CMAKE_CURRENT_BINARY_DIR}/org.kde.encoremusic.desktop @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.encoremusic.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 install(FILES org.kde.encoremusic.metainfo.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
+install(FILES org.kde.encoremusic.svg DESTINATION ${KDE_INSTALL_FULL_ICONDIR}/hicolor/scalable/apps/)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

@@ -4,9 +4,9 @@
 [Desktop Entry]
 Name=Encore Music
 GenericName=Music Player
-Comment=Browse and play your music collection
+Comment=Play your music collection
 Exec=@CMAKE_INSTALL_FULL_BINDIR@/encore-music %U
-Icon=folder-music
+Icon=org.kde.encoremusic
 Type=Application
 Terminal=false
 Categories=Qt;KDE;AudioVideo;Audio;Player;
