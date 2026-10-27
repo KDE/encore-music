@@ -93,10 +93,8 @@ BigscreenUI.ScrollablePage {
             color: Kirigami.Theme.disabledTextColor
         }
 
-        BigscreenUI.TextDelegate {
+        BigscreenUI.AboutDelegate {
             Layout.fillWidth: true
-            text: i18n("Music")
-            description: i18n("Version %1", Qt.application.version)
         }
     }
 

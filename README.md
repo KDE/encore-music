@@ -10,7 +10,7 @@ A music player for Plasma Bigscreen, built with [Bigscreen UI](https://invent.kd
 Features:
 * Find music organized by artists, albums
 * Custom playlists (TODO)
-* Track search (TODO)
+* Track search
 * MPRIS2 integration
 * UI for TVs and handhelds
 

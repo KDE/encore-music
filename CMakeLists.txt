@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.24)
 project(bigscreen-music VERSION 0.1.0)
 
 set(QT_MIN_VERSION "6.11.0")
-set(KF_MIN_VERSION "6.14.0")
+set(KF_MIN_VERSION "6.30.0")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

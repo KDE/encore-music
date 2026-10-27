@@ -7,6 +7,7 @@
 #include "version.h"
 
 #include <KAboutData>
+#include <KCoreAddons>
 #include <KCrash>
 #include <KDBusService>
 #include <KLocalizedQmlContext>
@@ -45,8 +46,11 @@ int main(int argc, char *argv[])
                          i18n("Enjoy your music collection on the big screen"),
                          KAboutLicense::GPL_V2,
                          i18n("© 2026 KDE Community"));
-    aboutData.addAuthor(i18n("Devin Lin"), QString(), u"devin@kde.org"_s);
+    aboutData.addAuthor(i18n("Devin Lin"), i18n("Maintainer"), u"devin@kde.org"_s);
     aboutData.setLicense(KAboutLicense::GPL_V2, KAboutLicense::OrLaterVersions);
+    aboutData.setHomepage(u"https://invent.kde.org/devinlin/bigscreen-music"_s);
+    aboutData.setBugAddress("https://invent.kde.org/devinlin/bigscreen-music/-/issues");
+    aboutData.setUrl(KAboutData::VCSBrowser, u"https://invent.kde.org/devinlin/bigscreen-music"_s);
     aboutData.setDesktopFileName(u"org.kde.bigscreen.music"_s);
     KAboutData::setApplicationData(aboutData);
     QGuiApplication::setWindowIcon(QIcon::fromTheme(u"folder-music"_s));
