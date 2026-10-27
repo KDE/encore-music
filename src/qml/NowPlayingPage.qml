@@ -88,7 +88,7 @@ BigscreenUI.Page {
             BigscreenUI.Label {
                 Layout.fillWidth: true
                 visible: text.length > 0
-                text: root.track.year > 0 ? i18nc("@info album title and release year", "%1 · %2", root.track.album, root.track.year) : root.track.album
+                text: root.track.year > 0 ? i18nc("@info album title and release year", "%1 · %2", root.track.album, String(root.track.year)) : root.track.album
                 type: root.compact ? BigscreenUI.Label.Body : BigscreenUI.Label.Heading
                 color: Kirigami.Theme.disabledTextColor
                 elide: Text.ElideRight
